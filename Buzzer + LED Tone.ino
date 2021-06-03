@@ -1,96 +1,66 @@
-/*
-  Melody
- */
 #define NOTE_C3  131
-#define NOTE_SC3 139
 #define NOTE_D3  147
-#define NOTE_SD3 156
 #define NOTE_E3  165
 #define NOTE_F3  175
 #define NOTE_G3  196
-#define NOTE_SG3 208
 #define NOTE_A3  220
 #define NOTE_B3  247
 #define NOTE_C4  262
-#define NOTE_SC4 277
 
-byte ledPin[8]={2,3,4,5,6,7,8,9};
-int ledState=0;
-// notes in the melody:
-
-int melody[] = {
-  NOTE_D3, NOTE_A3, NOTE_D3, NOTE_E3, NOTE_D3, 0, NOTE_D3, NOTE_F3,NOTE_E3
+int melody[]={
+NOTE_CE3,NOTE_D3,NOTE_E3,NOTE_F3,
+  NOTE_G3,NOTE_A3,NOTE_B3,NOTE_C4,NOTE_B3,NOTE_A3,NOTE_G3,NOTE_F3
+    ,NOTE_E3,NOTE_D3,NOTE_C3
 };
-
-// note durations: 4 = quarter note, 8 = eighth note, etc.:
-
-int noteDurations[] = {
-  8, 8, 8, 8,8,4,4,4,8
+int noteDurations[]={
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
 };
-
-void setup() {
-  for(byte i=0;i<8;++i)
+byte ledPin[8]={2,3,4,5,6,7,12,9};
+int ledState = 0;
+void setup()
+{
+   for(byte i=0;i<8;++i)
   {
      pinMode(ledPin[i],OUTPUT);
   }
-  // iterate over the notes of the melody:
 }
 
-void loop() {
-  // no need to repeat the melody.
-    // iterate over the notes of the melody:
-  for (int thisNote = 0; thisNote < 9; thisNote++) {
-
-    // to calculate the note duration, take one second
-    // divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    int noteDuration = 1000 / noteDurations[thisNote];
-    tone(10, melody[thisNote], noteDuration);
-
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
+void loop()
+{
+  byte ledState[8]={0};
+  for(int thisNote=0;thisNote<15;thisNote++){
+  	int noteDuration=1000/noteDurations[thisNote];
+    tone(8,melody[thisNote],noteDuration);
+    if(melody[thisNote]==NOTE_C3){digitalWrite(ledPin[0],HIGH);
+                             ledState[0]=ledPin[0];
+                              digitalWrite(ledState[0],0);  }
+    else if (melody[thisNote]==NOTE_D3){digitalWrite(ledPin[1],HIGH);
+                             ledState[1]=ledPin[1];
+                                        digitalWrite(ledState[1],0);}
+     else if (melody[thisNote]==NOTE_E3){digitalWrite(ledPin[2],HIGH);
+                             ledState[2]=ledPin[2];
+                                        digitalWrite(ledState[2],0);}
+     else if (melody[thisNote]==NOTE_F3){digitalWrite(ledPin[3],HIGH);
+                             ledState[3]=ledPin[3];
+                                         digitalWrite(ledState[3],0);}
+     else if (melody[thisNote]==NOTE_G3){digitalWrite(ledPin[4],HIGH);
+                             ledState[4]=ledPin[4];
+                                         digitalWrite(ledState[4],0);}
+     else if (melody[thisNote]==NOTE_A3){digitalWrite(ledPin[5],HIGH);
+                             ledState[5]=ledPin[5];
+                                         digitalWrite(ledState[5],0);}
+     else if (melody[thisNote]==NOTE_B3){digitalWrite(ledPin[6],HIGH);
+                             ledState[6]=ledPin[6];
+                                         digitalWrite(ledState[6],0);}
+     else if (melody[thisNote]=NOTE_C4){digitalWrite(ledPin[7],HIGH);
+                             ledState[7]=ledPin[7];
+                                        digitalWrite(ledState[7],LOW);}
+  
+     int pauseBetweenNotes= noteDuration * 1.3;
+    delay(pauseBetweenNotes);
+    noTone(8);
+   }
     
-    if(melody[thisNote] ==NOTE_C4){
-      digitalWrite(ledPin[0],HIGH);
-      ledState=ledPin[0];
-    }
-    else if(melody[thisNote] ==NOTE_D3){
-      digitalWrite(ledPin[1],HIGH);
-      ledState=ledPin[1];
-    }          
-    else if(melody[thisNote] ==NOTE_E3){
-      digitalWrite(ledPin[2],HIGH);
-      ledState=ledPin[2];
-    }
-    else if(melody[thisNote] ==NOTE_F3){
-      digitalWrite(ledPin[3],HIGH);
-      ledState=ledPin[3];
-    }          
-    else if(melody[thisNote] ==NOTE_G3){
-      digitalWrite(ledPin[4],HIGH);
-      ledState=ledPin[4];
-    }          
-    else if(melody[thisNote] ==NOTE_A3){
-      digitalWrite(ledPin[5],HIGH);
-      ledState=ledPin[5];
-    }          
-    else if(melody[thisNote] ==NOTE_B3){
-      digitalWrite(ledPin[6],HIGH);
-      ledState=ledPin[6];
-    }          
-    else if(melody[thisNote] ==NOTE_C3){
-      digitalWrite(ledPin[7],HIGH);
-      ledState=ledPin[7];
-    }          
-    int  pauseBetweenNotes = noteDuration * 1.5;
-    delay( pauseBetweenNotes);
-    
-    // stop the tone playing:
-    noTone(10);
-    
-    digitalWrite(ledState,LOW);
-   
-    
-  }
-  delay(200);
+  //for(int i=0;i<8;i++){digitalWrite(ledState[i],0);}
+  	delay(200);// Wait for 1000 millisecond(s)
 }
